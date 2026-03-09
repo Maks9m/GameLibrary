@@ -1,0 +1,51 @@
+# Build results
+bin/
+obj/
+*.dll
+*.exe
+*.pdb
+*.exe.config
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+.vscode/settings.json
+.vscode/launch.json
+
+# Environment and config
+.env
+.env.local
+settings.development.json
+appsettings.Development.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~
+
+# Dependencies
+packages/
+.nuget/
+
+# Build output
+publish/
+PublishProfiles/
+
+# Test results
+TestResults/
+*.trx
+
+# Rider
+.idea/
+*.sln.iml
+
+# JetBrains
+*.sln.iml

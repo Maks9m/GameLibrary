@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using GameLibrary.Models;
 using GameLibrary.DataAccess;
 
@@ -13,6 +15,7 @@ namespace GameLibrary
       var xmlDataService = new XmlDataService("./Data/gameLibrary.xml");
       var gameLibrary = xmlDataService.LoadFromXml();
       Console.WriteLine($"Loaded {gameLibrary.Games.Count} games,\n {gameLibrary.Developers.Count} developers,\n {gameLibrary.Players.Count} players,\n and {gameLibrary.Achievements.Count} achievements.");
+      
     }
   }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 using GameLibrary.Models;
@@ -19,7 +20,7 @@ namespace GameLibrary.DataAccess
                 : 0;
 
             var countByPlayer = _xmlDoc.Descendants("Achievement")
-                .GroupBy(a => a.Element("PlayerId")?.Value ?? "")
+                .GroupBy(a => a.Attribute("PlayerId")?.Value ?? "")
                 .ToDictionary(g => g.Key, g => g.Count());
 
             var rankings = _xmlDoc.Descendants("Player")
@@ -35,8 +36,8 @@ namespace GameLibrary.DataAccess
         public IEnumerable<(string DeveloperName, int Count)> GetDevelopersWithMostHighRatedGames()
         {
             var highRatedByDev = _xmlDoc.Descendants("Game")
-                .Where(g => double.TryParse(g.Element("Rating")?.Value, out var r) && r >= 8.0)
-                .GroupBy(g => g.Element("DeveloperId")?.Value ?? "")
+                .Where(g => double.TryParse(g.Element("Rating")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var r) && r >= 8.0)
+                .GroupBy(g => g.Attribute("DeveloperId")?.Value ?? "")
                 .Select(grp => (DeveloperId: grp.Key, Count: grp.Count()))
                 .OrderByDescending(x => x.Count);
 
@@ -53,7 +54,7 @@ namespace GameLibrary.DataAccess
                 .ToDictionary(d => d.Attribute("Id")?.Value ?? "", d => d.Element("Name")?.Value ?? "Unknown");
 
             var top5 = _xmlDoc.Descendants("Game")
-                .OrderByDescending(g => double.TryParse(g.Element("Rating")?.Value, out var r) ? r : 0)
+                .OrderByDescending(g => double.TryParse(g.Element("Rating")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var r) ? r : 0)
                 .Take(5)
                 .Select(g => (
                     Title: g.Element("Title")?.Value ?? "Unknown",
@@ -72,7 +73,7 @@ namespace GameLibrary.DataAccess
                 .Select(grp => (
                     Genre: grp.Key,
                     Count: grp.Count(),
-                    AvgRating: grp.Average(g => double.TryParse(g.Element("Rating")?.Value, out var r) ? r : 0)
+                    AvgRating: grp.Average(g => double.TryParse(g.Element("Rating")?.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out var r) ? r : 0)
                 ))
                 .OrderByDescending(x => x.Count);
 
